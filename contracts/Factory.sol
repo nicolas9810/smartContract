@@ -45,8 +45,8 @@ contract Factory{
         return address(ContractArrayTypeS[index]);
    }
 
-    function CreateNewContract(VendorType vendorType,string memory nameOfTheContract, string memory good) external returns(address){
-        Contract vendor = new Contract(payable(msg.sender),vendorType,nameOfTheContract,good);
+    function CreateNewContract(VendorType vendorType,string memory nameOfTheContract, string memory good,string memory country) external returns(address){
+        Contract vendor = new Contract(payable(msg.sender),vendorType,nameOfTheContract,good,country);
         
         if(vendorType == VendorType.PRODUCER){
             ContractArrayTypeP.push(vendor);
@@ -78,6 +78,7 @@ contract Contract is ERC20{
     string public nameOfTheContract;
     VendorType public vendor;
     string public good;
+    string public country;
     
     Product [100] public orders;
     uint256 ID;
@@ -106,13 +107,14 @@ contract Contract is ERC20{
 
 
     
-    constructor(address payable own, VendorType value,string memory name,string memory g) ERC20("DevToken", "DVT"){
+    constructor(address payable own, VendorType value,string memory name,string memory g,string memory c) ERC20("DevToken", "DVT"){
         owner = own;
         vendor=value;
         ID=0;
         factory = msg.sender;
         nameOfTheContract=name;
         good=g;
+        country=c;
 
 
     }
