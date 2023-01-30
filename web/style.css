@@ -85,7 +85,7 @@
 .profile-bottom img{
     width: 15px;
     margin-top: 15px;
-    cursor: pointer;
+    /* cursor: pointer; */
 }
 .profile-box button{
     background: #fff;
@@ -100,6 +100,21 @@
     font-weight: 600;
     font-size: 16px;
 }
+
+.profile-bottom button{
+    background: rgb(14, 178, 61);
+    color: #ffffff;
+    border: none;
+    outline: none;
+    box-shadow: 0 5px 10px rgba(244,67,54,0.5);
+    padding: 15px 30px;
+    cursor: pointer;
+    border-radius: 30px;
+    margin-bottom: -50px;
+    font-weight: 600;
+    font-size: 16px;
+}
+
 
 .contract-list{
     background-color:#dfe6e9;
@@ -127,13 +142,6 @@
     margin-left:2em ;
     margin-bottom: 0.5 em;
 
-}
-.access-button{
-    background-color: #f9ca24;
-    border:none;
-    padding:1em;
-    border-radius: 5px;
-    font-weight:bold;
 }
 .access-button{
     background-color: #f9ca24;

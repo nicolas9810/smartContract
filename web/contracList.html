@@ -8,19 +8,46 @@
     
     <body>
         <section>
+            
             <div class="container">
+                <div class="profile-box">
+                    <p id="balance">Balance: 0</p>
+
+                   <button id="buy-button" type="button">Buy</button>
+                   <div class="profile-bottom">
+                       <p>Buy Tokens</p>
+                       <input type="number" id="amount" name="amount"/>
+                       <!-- <img src="../images/arrow.png"> -->
+                   </div>
+                </div>
+            </div>
+
+            <div class="container">
+                
+
                 <div class="profile-box">
                    <img src="../images/menu.png" class="menu-icon">
                    <img src="../images/setting.png" class="setting-icon">
                    <img src="../images/profile-pic.png" class="profile-pic-icon">
-                   <h3> Name of the contract</h3>
-                   <p>Description of the contract</p>
-                   <button type="button">Follow</button>
+                   <h3 id="name-of-the-contract"> Name of the contract</h3>
+                   <p id="country">Country</p>
+                   <p id="product">product</p>
+                   <p id="stock">stock</p>
+                   <p id="impact">impact</p>
+                   <p>
+                    <input type="number" id="amount" name="amount"/>
+                   </p>
+                   <button id="buyGoodsButton" type="button">Buy</button>
                    <div class="profile-bottom">
-                       <p>Learn More About My Profile</p>
-                       <img src="../images/arrow.png">
+                       <p>Generate New Goods</p>
+                       <input id="number-of-goods" type="number" id="amount" name="amount"/>
+                       <button id="create-goods-button" type="button">Create</button>
+
                    </div>
                 </div>
+                
+
+                
             </div>
         </section>
         <section>
@@ -28,54 +55,29 @@
 
                 <div>
                     <h1>
-                        Contract
+                        Producer
                     </h1>
                 </div>
-                <div class="contract-container">
-                    <div class="card">
-                        <div class="title">Name</div>
-                        <div class="image"></div>
-                        <div class="text">prova testo a caso</div>
-                        <button class ="access-button">Open</button>
-                    </div>
-                    <div class="card">
-                        <div class="title">Name</div>
-                        <div class="image"></div>
-                        <div class="text">prova testo a caso</div>
-                        <button class ="access-button">Open</button>
-                    </div>
-                    <div class="card">
-                        <div class="title">Name</div>
-                        <div class="image"></div>
-                        <div class="text">prova testo a caso</div>
-                        <button class ="access-button">Open</button>
-                    </div>
-                    <div class="card">
-                        <div class="title">Name</div>
-                        <div class="image"></div>
-                        <div class="text">prova testo a caso</div>
-                        <button class ="access-button">Open</button>
-                    </div>
-                    <div class="card">
-                        <div class="title">Name</div>
-                        <div class="image"></div>
-                        <div class="text">prova testo a caso</div>
-                        <button class ="access-button">Open</button>
-                    </div>
-                    <div class="card">
-                        <div class="title">Name</div>
-                        <div class="image"></div>
-                        <div class="text">prova testo a caso</div>
-                        <button class ="access-button">Open</button>
-                    </div>
-                    <div class="card">
-                        <div class="title">Name</div>
-                        <div class="image"></div>
-                        <div class="text">prova testo a caso</div>
-                        <button class ="access-button">Open</button>
-                    </div>
+                <div id="listP" class="contract-container">                    
                 </div>
+                <div>
+                    <h1>
+                        Factory
+                    </h1>
+                </div>
+                <div id="listF" class="contract-container">                    
+                </div>
+
+                <div>
+                    <h1>
+                        Shop
+                    </h1>
+                </div>
+                <div id="listS" class="contract-container">                    
+                </div>
+
             </div>
         </section>
+        <script src="./contractList.js"></script>
     </body>
 </html>

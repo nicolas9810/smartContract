@@ -19,6 +19,8 @@ import "hardhat/console.sol";
 contract Factory{
 
     address public owner;
+    
+    //mapping (address => address) public  mapOwnerContract;
 
     constructor(){
         owner = msg.sender;
@@ -45,9 +47,9 @@ contract Factory{
         return address(ContractArrayTypeS[index]);
    }
 
-    function CreateNewContract(VendorType vendorType,string memory nameOfTheContract, string memory good,string memory country) external returns(address){
-        Contract vendor = new Contract(payable(msg.sender),vendorType,nameOfTheContract,good,country);
-        
+    function CreateNewContract(VendorType vendorType,string memory nameOfTheContract, string memory good,uint256 price,uint256 impact,string memory country) external returns(address){
+        Contract vendor = new Contract(payable (msg.sender),vendorType,nameOfTheContract,good,price,impact,country);
+        //mapOwnerContract[owner]=address(vendor);
         if(vendorType == VendorType.PRODUCER){
             ContractArrayTypeP.push(vendor);
             console.log("vendor = ",0);
@@ -79,13 +81,14 @@ contract Contract is ERC20{
     VendorType public vendor;
     string public good;
     string public country;
+    uint256 public quantity;
+    uint256 public impact;
+    uint256 public price;
+
+    Product product;
     
-    Product [100] public orders;
-    uint256 ID;
-    mapping( uint256 => Product) public goodsProduced;
-    mapping( uint256 => Product) public goodsBought;
-    uint256 averageImpact;
-    uint256 numOrder;
+
+  
 
     address payable public owner;
     address  factory;
@@ -99,57 +102,55 @@ contract Contract is ERC20{
         _;
     }
 
-    modifier maximumOrder{
-        require(numOrder < 100);
-        _;
-    }
-
-
 
     
-    constructor(address payable own, VendorType value,string memory name,string memory g,string memory c) ERC20("DevToken", "DVT"){
-        owner = own;
-        vendor=value;
-        ID=0;
+    constructor(address payable _owner, VendorType _vendor,string memory _name,string memory _good,uint256 _price,uint256 _impact,string memory _country) ERC20("DevToken", "DVT"){
+        owner = _owner;
+        vendor=_vendor;
         factory = msg.sender;
-        nameOfTheContract=name;
-        good=g;
-        country=c;
-
+        nameOfTheContract=_name;
+        good=_good;
+        country=_country;
+        impact=_impact;
+        price=_price;
+        createGoods();
 
     }
 
-    function issueToken(address receiver, uint256 amount ) public { 
-            _mint(receiver, amount);
+    function issueToken( uint256 amount ) public onlyOwner{ 
+            uint256 value = amount - (amount*impact*25)/100 ;
+            _mint(msg.sender, value);
+            emit newToken(amount,value);
     }
+
+    event newToken(uint256 amount,uint256 value);
     
-    function createGoods(string memory name, uint256 impact, uint256 price,string memory country,uint256 quantity)public
-        onlyOwner{
-            Product memory product = Product(name,country,impact,price,quantity);
-            goodsProduced[ID]= product;
-            ID++;
+    function createGoods() private{
+            product = Product(good,country,impact,price,0);
+            
     }
 
-    function requestNewGoods(string memory name, uint256  quantity) external {
-        if(numOrder<100){
-            Product memory product;
-            product.name=name;
-            product.quantity=quantity;
-            orders[numOrder]=product;
-            numOrder++;
-        }
+    event newGoodStock(string msg,uint256 newQuantity);
+
+    function generateGoods(uint256 q)external {
+        quantity=quantity+q;
+        emit newGoodStock("New good Stock ",q);
     }
 
-    modifier enoughGood(uint256 id,uint256 quantity){
-        require(goodsProduced[id].quantity > quantity);
+
+    modifier enoughGood(uint256 q){
+        require(quantity > q);
         _;
     }
-    function orderGoods(uint256 id, uint256 quantity) external enoughGood(id,quantity){
-        if(goodsProduced[id].quantity > quantity){
-            uint256 value = quantity * goodsProduced[id].price;
-            transferFrom(msg.sender,owner,value);
-            goodsProduced[id].quantity=goodsProduced[id].quantity-quantity;
-        }
+    function buyGoods( uint256 _quantity) external enoughGood(_quantity){
+        approve(msg.sender,_quantity*price);
+        transferFrom(msg.sender,owner,_quantity*price);
+        emit bought(msg.sender,owner,_quantity*price,good,_quantity);
+        quantity=quantity-_quantity;
+        emit newGoodStock("New good Stock ",quantity);
+
     }
+
+    event bought(address indexed _from, address indexed _to, uint amount,string _good, uint256 quantity);
     
 }
